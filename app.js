@@ -36,9 +36,7 @@ const syncQ=()=>{Q=S.qs&&S.qs.length?S.qs:Q0;DEF=S.def||DEF0;EMO=S.emo||EMO0;PRI
 const PAL={
 g:['سبز',['#2f6f5e','#e6f1ed'],['#6fc0a8','#27403a']],
 b:['آبی',['#2f5f8f','#e4edf6'],['#7fb0e0','#24364a']],
-t:['فیروزه‌ای',['#1f7a80','#e0f2f2'],['#5cc5cb','#1f3d40']],
 p:['بنفش',['#5e4a8c','#ece8f5'],['#b4a2e6','#352d4a']],
-r:['شرابی',['#6b1d33','#f3e2e7'],['#c97a90','#3d1e28']],
 k:['قرمز',['#b0281f','#f8e2e0'],['#f08b82','#4a2523']],
 o:['کهربایی',['#9a5b1e','#f5ebdf'],['#e0a565','#45331f']],
 s:['خاکستری',['#4a5560','#e8ebee'],['#a8b4bf','#2e3439']]};
@@ -210,22 +208,24 @@ const rbar=(l,p,tt)=>`<div class="rhb" data-tt="${esc(tt||l+': '+pcf(p*100))}"><
 const rcols=(L,lab0,lab1)=>`<div class="cols">${L.map((x,i)=>`<i style="height:${Math.max(2,x[0]*100)}%;animation-delay:${i*.03}s" data-tt="${esc(x[1])}"></i>`).join('')}</div><div class="xl"><span>${lab0}</span><span>${lab1}</span></div>`;
 const allDays=()=>{const ks=Object.keys(S.days).sort();if(!ks.length)return[];const L=[];for(let x=ks[0];x<=today();x=addD(x,1))L.push(x);return L};
 const wkOf=L=>{const W=[];let c=[];L.forEach(k=>{if((new Date(k+'T12:00').getDay()+1)%7==0&&c.length){W.push(c);c=[]}c.push(k)});if(c.length)W.push(c);return W};
-// پوشه‌ی ماه‌ها (۳.۹): وقتی داده‌ها بیش از یک ماه شمسی است، ردیف «همه» + یک دکمه برای هر ماه (جدیدترین اول) بالای گزارش می‌آید
-// و هر سه تب فقط همان ماه را حساب می‌کنند. RM خالی = همه؛ وگرنه «سال-ماه» شمسی
-// اگر داده‌ها بیش از یک سال شمسی باشد، یک ردیف سال هم جدا بالای ماه‌ها می‌آید (RY)؛ ماه‌ها فقط مال سالِ انتخاب‌شده‌اند
-let RM='',RY='';
+// پوشه‌ی ماه و سال (از ۳.۱۰ در تاریخچه، نه گزارش؛ گزارش همیشه کل ترازنامه است): وقتی ترازها بیش از یک ماه شمسی است،
+// ردیف «همه» + یک دکمه برای هر ماه (جدیدترین اول) بالای تاریخچه می‌آید. RM خالی = همه؛ وگرنه «سال-ماه» شمسی؛
+// null = هنوز انتخاب نشده، پس جدیدترین ماه باز می‌شود تا فهرست بلند نباشد
+// اگر ترازها بیش از یک سال شمسی باشد، یک ردیف سال هم جدا بالای ماه‌ها می‌آید (RY)؛ ماه‌ها فقط مال سالِ انتخاب‌شده‌اند
+let RM=null,RY='',HBK=0;
 const mKey=k=>{const j=g2j(k);return j[0]+'-'+j[1]};
 const rin=k=>RM?mKey(k)==RM:RY?mKey(k).split('-')[0]==RY:true;
-const rDays=()=>allDays().filter(rin);
-function mrow(){const en=LG=='en',M=[],Y=[];allDays().forEach(k=>{const m=mKey(k),y=m.split('-')[0];if(M[M.length-1]!=m)M.push(m);if(Y[Y.length-1]!=y)Y.push(y)});
+const rDays=allDays;
+function mrow(L){const en=LG=='en',M=[],Y=[];L.forEach(k=>{const m=mKey(k),y=m.split('-')[0];if(M[M.length-1]!=m)M.push(m);if(Y[Y.length-1]!=y)Y.push(y)});
+if(RM===null){RM=M.length>1?M[M.length-1]:'';RY=RM&&Y.length>1?RM.split('-')[0]:''}
 if(RY&&!Y.includes(RY))RY='';if(Y.length<2)RY='';const MS=M.filter(m=>!RY||m.split('-')[0]==RY);if(RM&&!MS.includes(RM))RM='';
 const yr=Y.length<2?'':`<div class="mrow" data-u><button class="b ${RY?'':'on'}" data-ry="">${en?'All years':'همه‌ی سال‌ها'}</button>${Y.slice().reverse().map(y=>`<button class="b ${RY==y?'on':''}" data-ry="${y}">${svg('fold')}${en?'Year ':'سال '}${dg(y)}</button>`).join('')}</div>`;
 const mr=M.length<2||(Y.length>1&&!RY)?'':`<div class="mrow" data-u><button class="b ${RM?'':'on'}" data-rm="">${RY?(en?'Whole year':'کل سال'):(en?'All':'همه')}</button>${MS.slice().reverse().map(m=>{const[y,mo]=m.split('-');return `<button class="b ${RM==m?'on':''}" data-rm="${m}">${svg('fold')}${(en?MNE:MN)[mo-1]} ${dg(y)}</button>`}).join('')}</div>`;
 if(M.length<2){RM='';RY=''}return yr+mr}
-function rep(){const en=LG=='en';let h=`<h2>${en?'Report':'گزارش'}</h2>${mrow()}<div class="seg" id="sg-rt" data-u><span class="sk"></span>${[['i',en?'Inventory':'ترازنامه'],['p',en?'Plan':'برنامه'],['g',en?'Goals':'اهداف']].map(x=>`<button class="${RTB==x[0]?'on':''}" data-rt="${x[0]}">${x[1]}</button>`).join('')}</div>`;
+function rep(){const en=LG=='en';let h=`<h2>${en?'Report':'گزارش'}</h2><div class="seg" id="sg-rt" data-u><span class="sk"></span>${[['i',en?'Inventory':'ترازنامه'],['p',en?'Plan':'برنامه'],['g',en?'Goals':'اهداف']].map(x=>`<button class="${RTB==x[0]?'on':''}" data-rt="${x[0]}">${x[1]}</button>`).join('')}</div>`;
 return h+'<div class="rfd">'+(RTB=='p'?repP():RTB=='g'?repG():repI())+'</div>'}
 // ---------- ترازنامه: سه عدد خلاصه، نقاط ضعف، احساسات، اصول، تحلیل و آخرین توضیحات
-function repI(){const ks=Object.keys(S.days).filter(k=>k<=today()&&rin(k)&&hasA(S.days[k])).sort();
+function repI(){const ks=Object.keys(S.days).filter(k=>k<=today()&&hasA(S.days[k])).sort();
 if(ks.length<3)return '<div class="c mu">برای گزارش حداقل چند روز مرور ثبت کن. هرچه داده بیشتر، الگوها دقیق‌تر.</div>';
 const span=rDays().length,set=new Set(ks);let st=0,b=0;rDays().forEach(k=>{if(set.has(k)){b++;st=Math.max(st,b)}else b=0});
 const clean=ks.filter(k=>!dfs(S.days[k]).length).length;
@@ -247,13 +247,12 @@ let Y=0,N=0,TY=0,TN=0;const why={};L.forEach(k=>{const p=(S.days[k]||{}).p||{};O
 if(!Y&&!N&&!TY&&!TN)return '<div class="c mu">هنوز برای برنامه‌ی روزانه چیزی ثبت نکرده‌ای. در تب «برنامه» کارها را با ✓ یا ✕ علامت بزن.</div>';
 let h=`<div class="c bigr">${rring(Y/Math.max(1,Y+N),110,'عادت‌ها: '+nf(Y)+' بار انجام شد، '+nf(N)+' بار انجام نشد')}<div><b style="font-size:16px">انجام عادت‌ها</b><div class="mu">${nf(Y)} ✓ · ${nf(N)} ✕ از روزهایی که علامت زده‌ای</div>${TY+TN?`<div class="mu" style="margin-top:4px">کارهای امروز: ${nf(TY)} از ${nf(TY+TN)} انجام شد</div>`:''}</div></div>`;
 if(HB.length)h+=`<div class="rings">${HB.map(t=>{const s=st(t.id);return `<div class="rgc">${rring(s.y/Math.max(1,s.y+s.n),84,t.t+': '+nf(s.y)+' انجام شد، '+nf(s.n)+' انجام نشد')}<div class="t" data-u>${esc(t.t)}</div><div class="s">${nf(s.y)} ✓ · ${nf(s.n)} ✕</div></div>`}).join('')}</div>`;
-const W=wkOf(L).slice(-12);h+=`<div class="c"><h3>هفته به هفته</h3><div class="mu">${RM?'درصد کارهای انجام‌شده در هر هفته‌ی این ماه':'درصد کارهای انجام‌شده در هر هفته (۱۲ هفته‌ی اخیر)'}</div>${rcols(W.map((w,i)=>{let y=0,a=0;w.forEach(k=>{const p=(S.days[k]||{}).p||{};Object.keys(p).forEach(id=>{if(p[id].d===1){y++;a++}else if(p[id].d===0)a++})});return[a?y/a:0,'هفته‌ی '+fdj(w[0])+': '+(a?pcf(y/a*100):'ثبت نشده')]}),fdj(W[0][0]),fdj(W.at(-1)[0]))}</div>`;
+const W=wkOf(L).slice(-12);h+=`<div class="c"><h3>هفته به هفته</h3><div class="mu">درصد کارهای انجام‌شده در هر هفته (۱۲ هفته‌ی اخیر)</div>${rcols(W.map((w,i)=>{let y=0,a=0;w.forEach(k=>{const p=(S.days[k]||{}).p||{};Object.keys(p).forEach(id=>{if(p[id].d===1){y++;a++}else if(p[id].d===0)a++})});return[a?y/a:0,'هفته‌ی '+fdj(w[0])+': '+(a?pcf(y/a*100):'ثبت نشده')]}),fdj(W[0][0]),fdj(W.at(-1)[0]))}</div>`;
 const wk=Object.keys(why).sort((a,b)=>why[b]-why[a]).slice(0,5);if(wk.length)h+=`<div class="c"><h3>دلیل‌های پرتکرار «انجام نشد»</h3>${wk.map(x=>`<div class="rk"><span style="flex:1" data-u>${esc(x)}</span><b>${nf(why[x])} بار</b></div>`).join('')}</div>`;
 return h}
 // ---------- اهداف: موفقیت کل، هفتگی/ماهانه، رتبه‌بندی و بهترین زنجیره. هر دوره (هفته از شنبه، ماه شمسی) که به تعداد روز هدف رسید «کامل» است
-// با پوشه‌ی ماه: فقط دوره‌هایی که در همان ماه تمام شده‌اند و روزهای تیک‌خورده‌ی همان ماه شمرده می‌شوند
-function gStat(g){const ka=Object.keys(S.days).filter(k=>gOn(g.id,k)).sort(),ks=ka.filter(rin),c0=dk(new Date(+g.id||Date.now())),s0=ka.length&&ka[0]<c0?ka[0]:c0,T=today(),n=gN(g);let full=0,past=0,x=prd(g.per||'w',s0>T?T:s0)[0];
-while(x<=T){const[s,e]=prd(g.per||'w',x);let c=0;for(let y=s;y<=e;y=addD(y,1))if(gOn(g.id,y))c++;if(e<T&&rin(e)){past++;if(c>=n)full++}x=addD(e,1)}
+function gStat(g){const ka=Object.keys(S.days).filter(k=>gOn(g.id,k)).sort(),ks=ka,c0=dk(new Date(+g.id||Date.now())),s0=ka.length&&ka[0]<c0?ka[0]:c0,T=today(),n=gN(g);let full=0,past=0,x=prd(g.per||'w',s0>T?T:s0)[0];
+while(x<=T){const[s,e]=prd(g.per||'w',x);let c=0;for(let y=s;y<=e;y=addD(y,1))if(gOn(g.id,y))c++;if(e<T){past++;if(c>=n)full++}x=addD(e,1)}
 let bs=0,b=0,pv=null;ks.forEach(k=>{b=pv&&addD(pv,1)==k?b+1:1;bs=Math.max(bs,b);pv=k});return{g,full,past,rate:past?full/past:0,bs,cur:gCnt(g,T),n,tot:ks.length}}
 function repG(){const G=S.goals.filter(g=>(g.st||'a')!='x'||S.days&&Object.keys(S.days).some(k=>gOn(g.id,k))).map(gStat);
 if(!G.length)return '<div class="c mu">هنوز هدفی نداری. در تب «اهداف» یک هدف هفتگی یا ماهانه اضافه کن.</div>';
@@ -264,7 +263,13 @@ h+=`<div class="c"><h3>هدف‌ها به ترتیب پیشرفت</h3>${G.slice(
 return h}
 // برچسب کوچک عدد دقیق روی نمودارهای گزارش
 document.addEventListener('click',e=>{let t=document.getElementById('rtip');const el=e.target.closest&&e.target.closest('[data-tt]');if(!el){if(t)t.remove();return}if(!t){t=document.createElement('div');t.id='rtip';document.body.appendChild(t)}t.textContent=el.dataset.tt;const r=el.getBoundingClientRect(),w=t.offsetWidth;t.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+'px';t.style.top=Math.max(8,r.top-t.offsetHeight-8)+'px';clearTimeout(t._h);t._h=setTimeout(()=>t.remove(),2600)});
-function his(){const ks=Object.keys(S.days).filter(k=>{const d=S.days[k];return hasA(d)||d.note||hasP(d)}).sort().reverse();if(!ks.length)return '<div class="c mu">هنوز تراز ثبت‌شده‌ای نیست.</div>';return '<h2>تاریخچه‌ی ترازها</h2>'+ks.map(k=>{const d=S.days[k],df=dfs(d).map(x=>x.l).join('، ');return `<div class="c"><div class="row"><b style="flex:1">${fd(k)}</b></div><div class="mu">${d.sv?'✓ ثبت‌شده':'ثبت‌نشده (پیش‌نویس)'}${df?' — موارد: '+esc(df):''}${d.gd&&d.gd.length?' — '+nf(d.gd.length)+' هدف انجام شد':''}</div><button class="b" data-open="${k}" style="margin-top:6px">باز کردن و ویرایش</button></div>`}).join('')}
+// تاریخچه با پوشه‌ی سال/ماه (mrow) و دکمه‌ی حذف هر روز (delDay)
+function his(){const ka=Object.keys(S.days).filter(k=>{const d=S.days[k];return hasA(d)||d.note||hasP(d)}).sort();if(!ka.length)return '<div class="c mu">هنوز تراز ثبت‌شده‌ای نیست.</div>';const fr=mrow(ka),ks=ka.filter(rin).reverse();return '<h2>تاریخچه‌ی ترازها</h2>'+fr+ks.map(k=>{const d=S.days[k],df=dfs(d).map(x=>x.l).join('، ');return `<div class="c"><div class="row"><b style="flex:1">${fd(k)}</b></div><div class="mu">${d.sv?'✓ ثبت‌شده':'ثبت‌نشده (پیش‌نویس)'}${df?' — موارد: '+esc(df):''}${d.gd&&d.gd.length?' — '+nf(d.gd.length)+' هدف انجام شد':''}</div><div class="r" style="margin-top:6px"><button class="b" data-open="${k}" style="flex:1">باز کردن و ویرایش</button><button class="b dz" data-dday="${k}" aria-label="حذف این روز">${svg('trash')}حذف</button></div></div>`}).join('')}
+// حذف کامل یک روز بعد از تأیید: جواب‌ها، توضیح، برنامه، تیک هدف‌ها، کارهای «فقط امروز» آن روز و یادداشت‌های صوتی‌اش
+function delDay(k){const en=LG=='en',o=document.createElement('div');o.className='ov';document.body.appendChild(o);
+o.innerHTML=`<div class="c" style="width:100%;max-width:360px;margin:0" data-u><div class="q" style="font-weight:700">${en?'Delete this day?':'این روز حذف شود؟'}</div><div class="mu">${fd(k)}</div><p>${en?'All answers, notes, plan ticks, goal ticks and voice notes of this day will be erased. This cannot be undone.':'همه‌ی جواب‌ها، توضیح‌ها، علامت‌های برنامه، تیک هدف‌ها و یادداشت‌های صوتی این روز پاک می‌شود و برگشت ندارد.'}</p><div class="r"><button class="b n" data-ddok style="flex:1">${en?'Delete':'حذف'}</button><button class="b" data-ddx style="flex:1">${en?'Cancel':'انصراف'}</button></div></div>`;
+o.addEventListener('click',async e=>{const b=e.target.closest('button');if(e.target==o||(b&&b.dataset.ddx!==undefined)){o.remove();return}if(!b||b.dataset.ddok===undefined)return;
+delete S.days[k];S.tasks.forEach(t=>{if(t.day==k)t.x=1});if(cur==k)cur=today();try{for(const v of await vAll(k))await vDel(v.id)}catch(x){}save();o.remove();tst(en?'Day deleted':'روز حذف شد');draw()})}
 let PR=null;
 function bak(){const pr=PR?`<div class="ban">این پشتیبان ${nf(Object.keys(PR.days).length)} روز دارد. با تأیید، همه‌ی داده‌های فعلی (به جز صداها) جایگزین می‌شوند.<div class="r"><button class="b n" data-pro>تأیید و جایگزینی</button><button class="b" data-prn>لغو</button></div></div>`:'';
 return `<h2>پشتیبان‌گیری</h2>${pr}<div class="c"><div class="mu">${AN?'داده‌ها فقط روی همین گوشی ذخیره می‌شوند. فایل بک‌آپ را جایی امن (مثلاً ایمیل خودت) نگه دار.':'داده‌ها فقط روی همین مرورگر ذخیره می‌شوند. این متن را کپی و جایی امن نگه دار؛ برای بازگردانی در همین کادر بچسبان.'}</div><div class="r"><button class="b p" data-dl>ذخیره‌ی فایل بک‌آپ روی گوشی</button></div><div class="mu" style="margin-top:8px">بازگردانی از فایل بک‌آپ (JSON):</div><input type="file" accept=".json,application/json" data-imj><details style="margin-top:8px"><summary class="mu">بازگردانی با چسباندن متن</summary><textarea id="bk">${esc(JSON.stringify(S))}</textarea><div class="r"><button class="b" data-imp>بازگردانی</button></div></details></div>`}
@@ -475,7 +480,8 @@ async function wipe(){try{localStorage.clear()}catch(e){}try{indexedDB.deleteDat
 window.S10pause=()=>{PT=Date.now();abk()};
 window.S10resume=()=>{const t=today();if(LT!==t){if(cur==LT)cur=t;LT=t}if(LK()&&!LOCKED&&PT&&Date.now()-PT>30e3){LOCKED=true;PIN='';LMSG='';FORGOT=0;draw();bioAsk()}else{draw();annCheck()}};
 if(!AN)document.addEventListener('visibilitychange',()=>document.hidden?S10pause():S10resume());
-window.S10back=()=>{const o=document.querySelector('.ov');if(o){o.remove();return true}if(LOCKED)return false;if(tab!='inv'){tab='inv';MSG='';draw();return true}return false};
+// روزی که از تاریخچه باز شده (HBK) با دکمه‌ی برگشت به تاریخچه برمی‌گردد، نه بیرون از برنامه
+window.S10back=()=>{const o=document.querySelector('.ov');if(o){o.remove();return true}if(LOCKED)return false;if(tab=='inv'&&HBK){HBK=0;tab='his';MSG='';draw();return true}if(tab!='inv'){tab='inv';MSG='';draw();return true}return false};
 const remSync=()=>{try{AN&&AN.setReminder(S.time,S.rem!==0,trS('🌙 وقت مرور شبانه است'),trS('تراز امروزت را ثبت کن.'))}catch(e){}};
 const markDone=k=>{try{if(AN&&k==today())AN.markDone(k)}catch(e){}};
 async function pinSet(){const L=LK(),v=id=>(document.getElementById(id)||{}).value||'',p0=v('p0'),p1=v('p1'),p2=v('p2');SMSG='';
@@ -499,10 +505,12 @@ const WCLK='<svg viewBox="0 0 64 64" class="wck" aria-hidden="true"><circle cx="
 const WLOGO='<svg viewBox="0 0 48 48" class="wlg" aria-hidden="true"><path fill="#F2C14E" d="M14,32a10,10 0 0 1 20,0z"/><path stroke="#F2C14E" stroke-width="2.6" stroke-linecap="round" d="M36.35,30.04L41.78,29.18 M32.84,23.16L36.73,19.27 M25.96,19.65L26.82,14.22 M22.04,19.65L21.18,14.22 M15.16,23.16L11.27,19.27 M11.65,30.04L6.22,29.18"/><path stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M7,34h34"/></svg>';
 function wdv(){const en=LG=='en',f=S.ui.wf||'w',b=S.ui.wb||'n',c=S.clean?cleanDiff(S.clean):null,n=x=>c?String(x):'–',bc=b=='w'?'#fff':b=='k'?'#111':b=='a'?(PAL[S.ui.pal]||PAL.g)[1][0]:'transparent';
 const sg=(id,k,L)=>`<div class="seg" id="sg-${id}"><span class="sk"></span>${L.map(x=>`<button class="${k==x[0]?'on':''}" data-${id}="${x[0]}">${x[1]}</button>`).join('')}</div>`;
-return `<div data-u><div class="wpv" style="background:${f=='k'?'#d9d3c7':'#2c4a5c'}"><div class="wdg" style="color:${f=='k'?'#111':'#fff'};background:${bc}">${WCLK}<div class="wc"><b>JUST</b><span>${n(c&&c.y)}</span></div><div class="wc"><b>FOR</b><span>${n(c&&c.m)}</span></div><div class="wc"><b>TODAY</b><span>${n(c&&c.d)}</span></div>${WLOGO}</div></div>
+// پیش‌نمایش هر دو ویجت: عقربه‌ای و دیجیتال (۳.۱۰)؛ تنظیم‌ها برای هر دو یکی است
+const t=new Date(),hm=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0'),wg=ck=>`<div class="wdg" style="color:${f=='k'?'#111':'#fff'};background:${bc}">${ck}<div class="wc"><b>JUST</b><span>${n(c&&c.y)}</span></div><div class="wc"><b>FOR</b><span>${n(c&&c.m)}</span></div><div class="wc"><b>TODAY</b><span>${n(c&&c.d)}</span></div>${WLOGO}</div>`;
+return `<div data-u><div class="wpv" style="background:${f=='k'?'#d9d3c7':'#2c4a5c'}">${wg(WCLK)}${wg(`<span class="wdt">${hm}</span>`)}</div>
 <div class="mu">${en?'Text color':'رنگ نوشته'}</div>${sg('wf',f,[['w',en?'White':'سفید'],['k',en?'Black':'مشکی']])}
 <div class="mu" style="margin-top:8px">${en?'Background':'زمینه'}</div>${sg('wb',b,[['n',en?'None':'بی‌زمینه'],['w',en?'White':'سفید'],['k',en?'Black':'مشکی'],['a',en?'App color':'رنگ برنامه']])}
-<div class="mu" style="margin-top:10px">${en?'Years, months and days clean appear under JUST, FOR and TODAY. To add it: touch and hold an empty spot on the home screen → Widgets → Taraz. Tapping the widget opens the app (with your lock, if it is on).':'زیر JUST و FOR و TODAY به ترتیب سال، ماه و روز پاکی می‌آید. برای گذاشتن ویجت: انگشتت را روی جای خالی صفحه‌ی اصلی گوشی نگه دار ← «ویجت‌ها» ← «تراز». با زدن روی ویجت برنامه باز می‌شود (اگر قفل روشن باشد، اول رمز یا اثر انگشت).'}</div></div>`}
+<div class="mu" style="margin-top:10px">${en?'Years, months and days clean appear under JUST, FOR and TODAY. There are two widgets: with an analog clock («Taraz») and with a digital clock («Taraz (digital clock)»); these settings apply to both. To add one: touch and hold an empty spot on the home screen → Widgets → Taraz. Tapping the widget opens the app (with your lock, if it is on).':'زیر JUST و FOR و TODAY به ترتیب سال، ماه و روز پاکی می‌آید. دو ویجت داری: «تراز» با ساعت عقربه‌ای و «تراز (ساعت دیجیتال)»؛ این تنظیم‌ها برای هر دو است. برای گذاشتن ویجت: انگشتت را روی جای خالی صفحه‌ی اصلی گوشی نگه دار ← «ویجت‌ها» ← «تراز». با زدن روی ویجت برنامه باز می‌شود (اگر قفل روشن باشد، اول رمز یا اثر انگشت).'}</div></div>`}
 function setv(){const L=LK(),bio=bioOk(),at=+(localStorage.getItem('s10abt')||0),th=S.ui.th||'auto';let ver='';try{ver=AN?AN.version():''}catch(e){}
 // زبان با دو دکمه‌ی کوچک کنار عنوان؛ نام از دکمه‌ی مداد کنار نام بالای صفحه عوض می‌شود
 let h=`<div class="row sth"><h2 style="flex:1">تنظیمات</h2><div class="seg lgsw" id="sg-lg" data-u><span class="sk"></span><button class="${LG!='en'?'on':''}" data-lgs="fa" aria-label="فارسی">فا</button><button class="${LG=='en'?'on':''}" data-lgs="en" aria-label="English">EN</button></div></div>`;
@@ -571,7 +579,7 @@ window.addEventListener('resize',()=>{clearTimeout(CAPT);CAPT=setTimeout(capFix,
 (function(){let x0=0,y0=0,dx=0,on=0,lk=null;const pg=()=>document.querySelector('#app .pg'),idx=()=>NAV.findIndex(x=>x[0]==tab),dir=d=>(d>0)===(LG!='en')?1:-1;
 document.addEventListener('touchstart',e=>{const t=e.target;on=0;if(e.touches.length>1||LOCKED||!S.user||idx()<0||document.querySelector('.ov,#intro:not([hidden])')||t.closest('input,textarea,select,.seg,.pie,.mrow,nav'))return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;lk=null;on=1},{passive:true});
 document.addEventListener('touchmove',e=>{if(!on)return;dx=e.touches[0].clientX-x0;const dy=e.touches[0].clientY-y0;if(lk===null&&(Math.abs(dx)>12||Math.abs(dy)>12))lk=Math.abs(dx)>Math.abs(dy)*1.4?'h':'v';if(lk!='h')return;if(e.cancelable)e.preventDefault();const j=idx()+dir(dx),p=pg();if(p){p.style.transition='none';p.style.transform=`translateX(${dx*(j>=0&&j<NAV.length?.3:.08)}px)`}},{passive:false});
-const end=()=>{if(!on)return;on=0;const p=pg();if(lk=='h'&&Math.abs(dx)>70){const j=idx()+dir(dx);if(j>=0&&j<NAV.length){if(p)p.style.transform='';tab=NAV[j][0];MSG='';SMSG='';NMSG='';window.scrollTo(0,0);buzz();draw();return}}if(p){p.style.transition='transform .25s';p.style.transform=''}};
+const end=()=>{if(!on)return;on=0;const p=pg();if(lk=='h'&&Math.abs(dx)>70){const j=idx()+dir(dx);if(j>=0&&j<NAV.length){if(p)p.style.transform='';tab=NAV[j][0];HBK=0;MSG='';SMSG='';NMSG='';window.scrollTo(0,0);buzz();draw();return}}if(p){p.style.transition='transform .25s';p.style.transform=''}};
 document.addEventListener('touchend',end);document.addEventListener('touchcancel',end)})();
 try{new ResizeObserver(()=>{const n=document.querySelector('#nav');if(n)n.classList.remove('go');capFix()}).observe(document.getElementById('nav'))}catch(e){}
 function fx(){const app=document.getElementById('app');
@@ -601,7 +609,7 @@ TAP=selOf(t);buzz();
 if(D.nto){const w=t.nextElementSibling,o=!w.classList.contains('on');w.classList.toggle('on',o);NOP[D.nto]=o;t.firstElementChild.textContent=o?'−':'+';if(o){const x=w.querySelector('textarea');if(x){grow(x);setTimeout(()=>x.focus(),250)}}TAP='';return}
 if(D.im){S.ui.im=D.im=='s'?'s':'';IDX=0;save();draw();return}
 if(D.stp){const s=+D.stp;if(s>0&&IDX>=Q.length-1){S.ui.im='';save();draw();const m=document.getElementById('sum');if(m)m.scrollIntoView({block:'start',behavior:'smooth'});return}IDX=Math.max(0,IDX+s);SLD=s>0?'sF':'sB';draw();return}
-if(D.tab){const n=tab==D.tab&&D.tab=='set'?'inv':D.tab;if(tab!=n){MSG='';SMSG='';NMSG=''}tab=n;window.scrollTo(0,0)}else if(D.sh!==undefined){const d=new Date(cur+'T12:00');d.setDate(d.getDate()+ +D.sh);const k=dk(d);cur=k>today()?today():k}
+if(D.tab){HBK=0;const n=tab==D.tab&&D.tab=='set'?'inv':D.tab;if(tab!=n){MSG='';SMSG='';NMSG=''}tab=n;window.scrollTo(0,0)}else if(D.sh!==undefined){const d=new Date(cur+'T12:00');d.setDate(d.getDate()+ +D.sh);const k=dk(d);cur=k>today()?today():k}
 // زدن دوباره روی گزینه‌ی انتخاب‌شده، جواب را برمی‌دارد
 else if(D.q){const a=day(cur).a[D.q]||(day(cur).a[D.q]={});if(a.v===+D.v)delete a.v;else a.v=+D.v;
 // در حالت یکی‌یکی بعد از جواب بله/خیر خودش به سؤال بعد می‌رود
@@ -633,7 +641,9 @@ else if(D.done!==undefined){day(cur).done=1;markDone(cur)}
 else if(D.rg){range=+D.rg}
 else if(D.chart){CH[D.chart]=!CH[D.chart]}
 else if(D.sv!==undefined){day(cur).sv=Date.now();markDone(cur);closing()}
-else if(D.open){cur=D.open;tab='inv'}
+else if(D.open){cur=D.open;tab='inv';HBK=1;window.scrollTo(0,0)}
+else if(D.dday){delDay(D.dday);return}
+else if(D.ddok!==undefined||D.ddx!==undefined)return;
 else if(D.dl!==undefined){dl();return}
 else if(D.out!==undefined){outAsk();return}
 else if(D.ipv!==undefined){intro(()=>{},true);return}
@@ -728,8 +738,10 @@ function mig6(){const o='بی‌صداقتی',n='ناصادقی';if(S.def){const
 function mig7(){if(S.emo&&!S.emo.includes('سپاسگزاری')){const i=S.emo.indexOf('قدردانی');S.emo.splice(i>=0?i+1:S.emo.length,0,'سپاسگزاری')}}
 // نسخه‌ی ۸ (۳.۹): «قدردانی» و «سپاسگزاری» یک احساس‌اند؛ «قدردانی» از فهرست حذف و انتخاب‌های قبلی‌اش «سپاسگزاری» می‌شود تا در گزارش گم نشود
 function mig8(){const o='قدردانی',n='سپاسگزاری';if(S.emo){const i=S.emo.indexOf(o);if(i>=0){if(S.emo.includes(n))S.emo.splice(i,1);else S.emo[i]=n}}Object.keys(S.days||{}).forEach(k=>{const a=(S.days[k]||{}).a||{};Object.keys(a).forEach(q=>{const g=a[q]&&a[q].g;if(g){const i=g.indexOf(o);if(i>=0){if(g.includes(n))g.splice(i,1);else g[i]=n}}})})}
-const SV=8;function migrate(){if((S.v||0)<3&&S.qs&&!S.qs.some(q=>q.id=='n24'))S.qs.push(Object.assign({},Q0.find(q=>q.id=='n24')));
-if((S.v||0)<4&&S.qs)S.qs.forEach(q=>{if(q.h=='مرور روزانه')q.h=Q0[0].h;else if(!q.h&&(q.id=='n5'||q.id=='n9'))q.h=Q0.find(x=>x.id==q.id).h});(S.goals||[]).forEach(g=>{if(!Array.isArray(g.steps))g.steps=[];if(!g.st)g.st=(g.pr||0)>=100?'d':'a';if(!g.per){g.per='w';if(!g.dn)g.dn=3}});if((S.v||0)<5)mig5();if((S.v||0)<6)mig6();if((S.v||0)<7)mig7();if((S.v||0)<8)mig8();S.v=SV}
+// ۳.۱۰: «فیروزه‌ای» (خیلی شبیه سبز) و «شرابی» (خیلی شبیه قرمز) برداشته شدند؛ کسی که آن‌ها را داشت به سبز / قرمز می‌رود
+function mig9(){const u=S.ui||{};if(u.pal=='t')u.pal='g';else if(u.pal=='r')u.pal='k'}
+const SV=9;function migrate(){if((S.v||0)<3&&S.qs&&!S.qs.some(q=>q.id=='n24'))S.qs.push(Object.assign({},Q0.find(q=>q.id=='n24')));
+if((S.v||0)<4&&S.qs)S.qs.forEach(q=>{if(q.h=='مرور روزانه')q.h=Q0[0].h;else if(!q.h&&(q.id=='n5'||q.id=='n9'))q.h=Q0.find(x=>x.id==q.id).h});(S.goals||[]).forEach(g=>{if(!Array.isArray(g.steps))g.steps=[];if(!g.st)g.st=(g.pr||0)>=100?'d':'a';if(!g.per){g.per='w';if(!g.dn)g.dn=3}});if((S.v||0)<5)mig5();if((S.v||0)<6)mig6();if((S.v||0)<7)mig7();if((S.v||0)<8)mig8();if((S.v||0)<9)mig9();S.v=SV}
 // اولین اجرای هر نسخه‌ی جدید: پیش از هر کاری یک بک‌آپ جدا از داده‌های نسخه‌ی قبلی گرفته می‌شود
 try{const v=AN&&AN.version(),pv=localStorage.getItem('s10ver');if(v&&pv!==v){if(pv&&Object.keys(S.days).length)AN.backupNamed('step10-before-v'+v+'.json',JSON.stringify(S));localStorage.setItem('s10ver',v)}}catch(e){}
 migrate();wsync();

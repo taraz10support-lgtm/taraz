@@ -111,5 +111,6 @@ I18N.push(
 ["احساس جدید...","New feeling...",0],["احساسات پرتکرار (درصد روزها)","Most frequent feelings (% of days)",0],["احساسات: ","Feelings: ",1],
 ["شادی","Joy",0],["آرامش","Calm",0],["امید","Hope",0],["قدردانی","Gratitude",0],["عشق","Love",0],["غم","Sadness",0],["اضطراب","Anxiety",0],["تنهایی","Loneliness",0],["شرم","Shame",0],["احساس گناه","Guilt",0],["دلخوری","Hurt",0],["ناامیدی","Hopelessness",0],["خستگی","Tiredness",0],["بی‌حوصلگی","Boredom",0],["ارتباط با ما","Contact us",1],
 ["سؤال، انتقاد یا پیشنهادی برای بهتر شدن برنامه داری؟ در تلگرام پیام بده:","Questions, criticism or ideas to improve the app? Message us on Telegram:",0],["راهنمای برنامه","User guide",1],
-["برای یکسان کردن سؤال‌ها روی چند گوشی، فایل تنظیمات سؤال‌ها را بگیر و در همین بخشِ گوشی دیگر وارد کن (پاسخ‌ها دست نمی‌خورد).","To use the same questions on several phones, save the questions file and import it in this section on the other phone (answers are untouched).",0],["بازگشت به لیست پیش‌فرض","Reset to default list",0],["نسخه","Version",1]
+["برای یکسان کردن سؤال‌ها روی چند گوشی، فایل تنظیمات سؤال‌ها را بگیر و در همین بخشِ گوشی دیگر وارد کن (پاسخ‌ها دست نمی‌خورد).","To use the same questions on several phones, save the questions file and import it in this section on the other phone (answers are untouched).",0],["بازگشت به لیست پیش‌فرض","Reset to default list",0],["نسخه","Version",1],
+["حذف این روز","Delete this day",0],["روز حذف شد","Day deleted",0],["تاریخچه‌ی ترازها","Inventory history",0]
 );
