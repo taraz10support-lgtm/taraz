@@ -1,0 +1,382 @@
+/* فونت ایران‌یکان X (متغیر: همه‌ی وزن‌ها در یک فایل). وزیرمتن فقط پشتیبان است اگر فونت اصلی بار نشود */
+
+@font-face{font-family:Vazirmatn;src:url(fonts/Vazirmatn-Regular.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Vazirmatn;src:url(fonts/Vazirmatn-Bold.woff2) format('woff2');font-weight:700;font-display:swap}
+/* ظاهر به سبک iOS: پس‌زمینه‌ی خاکستری روشن یا سیاه، کارت‌های گرد و دکمه‌های کپسولی (بدون جلوه‌ی شیشه‌ای). --ac و --ac2 را app.js از پالت رنگ می‌گذارد */
+:root{box-sizing:border-box;--bg:#f2f2f7;--card:#fff;--tx:#1c1c1e;--mu:#8a8a8e;--ac:#2f6f5e;--ac2:#e6f1ed;--bad:#ff3b30;--bd:rgba(60,60,67,.13);--fill:rgba(120,120,128,.12);--sh:0 8px 24px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--mu:#8d8d93;--ac:#6fc0a8;--ac2:#27403a;--bad:#ff453a;--bd:rgba(84,84,88,.45);--fill:rgba(120,120,128,.24);--sh:0 8px 24px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#000;--card:#1c1c1e;--tx:#f2f2f7;--mu:#8d8d93;--ac:#6fc0a8;--ac2:#27403a;--bad:#ff453a;--bd:rgba(84,84,88,.45);--fill:rgba(120,120,128,.24);--sh:0 8px 24px rgba(0,0,0,.6)}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.75 YekanX,Vazirmatn,Tahoma,sans-serif;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-wrap:anywhere}
+/* هیچ‌چیز (مثل لغزیدن صفحه هنگام عوض شدن تب) نباید از عرض صفحه بیرون بزند؛ وگرنه گوشی لحظه‌ای صفحه را کوچک و دوباره بزرگ می‌کند */
+html{overflow-x:hidden}
+main{max-width:640px;margin:auto;padding:0 14px 12px;overflow-x:clip}
+h1{font-size:26px;font-weight:700;margin:0;line-height:1.5}h2{font-size:19px;font-weight:700;margin:20px 4px 8px}
+.ic{display:block}
+
+/* هدر چسبان */
+.hdr{position:sticky;top:0;z-index:9;margin:0 -14px 2px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;background:var(--bg)}
+.hdr .hsub{margin-top:6px;line-height:1.4}
+h1[data-u]{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* مداد کنار نام: ویرایش نام */
+.nmr{display:flex;align-items:center;gap:6px;min-width:0}
+.nme{flex:none;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:var(--fill);color:var(--mu);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nme .ic{width:16px;height:16px}
+/* عنوان تنظیمات با کلید کوچک زبان */
+.sth{margin:20px 4px 8px}.sth h2{margin:0}
+.seg.lgsw{margin:0;flex:none}.seg.lgsw>button{min-height:30px;padding:3px 14px;font-size:13px;font-weight:700}
+.b.gear{width:40px;height:40px;min-height:0;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--tx);background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.b.gear .ic{width:21px;height:21px}.b.gear.on{background:var(--tx);color:var(--bg)}
+
+/* نوار پایین: کپسول شناور مات */
+nav{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;display:flex;padding:6px;gap:2px;border-radius:34px;z-index:10;background:var(--card);border:1px solid var(--bd);box-shadow:var(--sh)}
+nav button{flex:1;min-width:0;border:0;background:none;color:var(--tx);opacity:.6;padding:7px 1px 6px;border-radius:28px;font:inherit;font-size:10.5px;font-weight:600;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none;transition:background .25s,opacity .2s,transform .15s}
+nav button:active{transform:scale(.94)}
+nav .ni{display:block;margin:0 auto 6px}
+nav .ic{width:23px;height:23px;margin:auto}
+nav button{position:relative;z-index:1}
+nav button.on{opacity:1}
+/* کپسول فنری زیر تب فعال (و همه‌ی کلیدهای چندگزینه‌ای): app.js جای قبلی را نگه می‌دارد و کپسول از آنجا با کمی فنر می‌لغزد */
+nav>.sk{position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:28px;background:var(--fill);z-index:0}
+nav.go>.sk,.seg.go>.sk{transition:transform .5s cubic-bezier(.3,1.35,.5,1),width .5s cubic-bezier(.3,1.35,.5,1),opacity .25s}
+nav button.pp .ic{animation:icPop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes icPop{0%{transform:scale(1)}30%{transform:scale(.75) translateY(2px)}70%{transform:scale(1.18) translateY(-3px)}100%{transform:none}}
+.seg{position:relative;display:flex;background:var(--fill);border-radius:999px;padding:3px;margin:8px 0}
+.seg>button{position:relative;z-index:1;flex:1;min-width:0;border:0;background:none;border-radius:999px;padding:7px 4px;min-height:36px;font:inherit;font-size:13.5px;font-weight:600;color:var(--mu);cursor:pointer;white-space:nowrap;transition:color .25s}
+.seg>button.on{color:var(--tx)}
+.seg>.sk{position:absolute;top:3px;bottom:3px;left:0;width:0;border-radius:999px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.14)}
+/* در تم تیره کپسول کلیدها کمی روشن‌تر است تا روی کارت دیده شود (مثل iOS) */
+:root{--sg:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sg:#636366}}
+:root[data-theme="dark"]{--sg:#636366}
+.seg>.sk{background:var(--sg)}
+.accb .c .seg{background:var(--fill)}
+/* صفحه از سمت تب تازه وارد می‌شود */
+.fromL{animation:fromL .38s cubic-bezier(.2,.7,.2,1)}@keyframes fromL{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.fromR{animation:fromR .38s cubic-bezier(.2,.7,.2,1)}@keyframes fromR{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+/* دکمه‌ای که همین الان لمس شد می‌پرد */
+.b.pp{animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(.86)}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+
+/* کارت‌ها و دکمه‌ها */
+.c{background:var(--card);border:0;border-radius:22px;padding:14px 16px;margin:10px 0}
+.q{font-size:14.5px}
+.r{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.row{display:flex;gap:8px;align-items:center}
+.b{border:0;background:var(--fill);color:var(--tx);border-radius:999px;padding:6px 16px;min-height:40px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;touch-action:manipulation;user-select:none;transition:transform .12s,background .2s}
+.b:active{transform:scale(.96)}
+.b:disabled{opacity:.35;cursor:default;transform:none}
+.b.y,.b.p{background:var(--ac);color:var(--on,#fff)}.b.n{background:var(--bad);color:#fff}
+.b.nv{width:40px;min-width:40px;padding:0;display:flex;align-items:center;justify-content:center}.b.nv .ic{width:20px;height:20px}
+.row>.b{white-space:nowrap;flex-shrink:0}
+.row>.b[style*="flex:1"]{white-space:normal;flex-shrink:1;min-width:0}
+.x{border:0;background:none;color:var(--bad);cursor:pointer;font-size:15px;min-width:32px;min-height:32px;border-radius:50%}
+a.tg{display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:10px;letter-spacing:.3px}
+
+/* فیلدها */
+textarea,input,select{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:0;border-radius:14px;background:var(--fill);color:var(--tx);outline:none}
+textarea:focus,input:focus,select:focus{box-shadow:0 0 0 2px var(--ac)}
+input+input{margin-top:8px}
+input[type=checkbox]{width:20px;height:20px;padding:0;margin:0;accent-color:var(--ac);flex:none;box-shadow:none}
+input[type=range]{padding:0;background:none;accent-color:var(--ac);box-shadow:none}
+input[type=file]{font-size:12px;padding:8px}
+textarea{min-height:48px;resize:vertical;overflow:hidden;display:block;margin-top:6px}
+#bk{min-height:90px;max-height:200px;overflow:auto}
+.row>input:not([type]),.row>select{flex:1;min-width:0}
+.ck{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:14.5px}
+.ta{position:relative}.ta textarea{padding-inline-end:48px}
+.mic{position:absolute;inset-inline-end:7px;top:13px;width:34px;height:34px;border:0;border-radius:50%;background:var(--card);color:var(--tx);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.mic .ic{width:18px;height:18px}
+
+/* متن‌ها و نشانه‌ها */
+.mu{color:var(--mu);font-size:12.5px}
+.sc{font-size:34px;font-weight:700;color:var(--ac)}
+.ban{background:var(--ac2);border-radius:18px;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.bar{height:8px;background:var(--fill);border-radius:999px;overflow:hidden;margin:2px 0 10px}.bar i{display:block;height:100%;border-radius:999px;background:var(--ac)}.bar.d i{background:var(--bad)}
+.chip{display:inline-flex;align-items:center;gap:2px;background:var(--fill);border-radius:999px;padding:2px 12px 2px 4px;font-size:13.5px}.chip .x{min-width:26px;min-height:26px;font-size:12px}
+.qe{border-top:1px solid var(--bd);padding-top:10px;margin-top:10px}.qe textarea{margin:6px 0}
+
+/* پنجره‌های روی صفحه (تقویم، خروج، ذخیره‌ی صدا) */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.ov>.c{border-radius:28px;padding:18px;box-shadow:var(--sh)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-top:8px}
+.dd{aspect-ratio:1;padding:0;border:0;background:none;color:var(--tx);border-radius:50%;font:inherit;cursor:pointer}.dd.p{background:var(--ac);color:var(--on,#fff);font-weight:700}.dd.tdy{color:var(--ac);font-weight:700}.dd:disabled{opacity:.3;cursor:default}
+
+/* تنظیمات آکاردئونی، مثل فهرست‌های گروهی iOS */
+details>summary{cursor:pointer;font-weight:600}
+.acc{padding:0;overflow:hidden;margin:8px 0}
+.acc>summary{list-style:none;display:flex;align-items:center;gap:14px;padding:14px 16px;font-size:15px;user-select:none}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary .ic{width:22px;height:22px;flex:none;color:var(--tx)}
+.acc>summary::after{content:"";margin-inline-start:auto;width:8px;height:8px;border-right:2px solid var(--mu);border-bottom:2px solid var(--mu);transform:translateY(-2px) rotate(45deg);transition:transform .25s}
+.acc[open]>summary::after{transform:translateY(2px) rotate(-135deg)}
+.acc[open]>summary{border-bottom:1px solid var(--bd)}
+.accb{padding:12px 16px 16px}
+.hs{margin:4px 0 14px}.hs p{margin:2px 0 0;font-size:14px}
+.pal{display:grid;grid-template-columns:repeat(auto-fill,44px);gap:14px;margin:8px 0}
+.sw{width:44px;height:44px;padding:0;border-radius:50%;background:var(--c);border:3px solid transparent;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sw.on{border-color:var(--tx);box-shadow:inset 0 0 0 3px var(--card)}
+
+/* صفحه‌ی قفل: دکمه‌های گرد مثل صفحه‌ی رمز آیفون */
+#lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+#lock[hidden]{display:none}
+body.lk main,body.lk nav,body.reg nav{display:none}
+.lkb{width:100%;max-width:320px;text-align:center}
+.lkt{font-size:21px;font-weight:700;margin-bottom:4px}
+.dots{font-size:20px;letter-spacing:10px;color:var(--tx);min-height:40px;margin:8px 0}
+.pad{display:grid;grid-template-columns:repeat(3,74px);gap:16px 24px;justify-content:center;direction:ltr;margin:8px 0 18px}
+.pad button{width:74px;height:74px;border-radius:50%;border:0;background:var(--fill);color:var(--tx);font:inherit;font-size:28px;touch-action:manipulation;transition:background .15s}
+.pad button:active{background:var(--bd)}
+
+/* صفحه‌ی خوش‌آمد */
+.regw{margin:0 auto;min-height:calc(100vh - 24px);display:flex;flex-direction:column;padding-top:10vh}
+.regf{margin-top:auto;padding:24px 0 8px;color:var(--mu);font-size:13px;line-height:1.9;text-align:center;font-weight:600}
+body.reg{padding-bottom:0}
+
+/* مقدمه‌ی ورود: از تاریکی، نوری گرم آرام پخش می‌شود و جمله ظاهر می‌شود */
+:root{--glow:#fff8ea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--glow:#2a2418}}
+:root[data-theme="dark"]{--glow:#2a2418}
+#intro{position:fixed;inset:0;z-index:200;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .7s}
+#intro[hidden]{display:none}
+#intro.out{opacity:0}
+#intro .glow{position:absolute;left:50%;top:50%;width:170vmax;height:170vmax;margin:-85vmax 0 0 -85vmax;border-radius:50%;background:radial-gradient(circle,var(--glow) 0%,var(--bg) 42%,var(--bg) 70%);transform:scale(0);opacity:0;transition:transform 3.4s cubic-bezier(.2,.6,.2,1),opacity 2.2s ease}
+#intro.go .glow{transform:scale(1);opacity:1}
+.itx{position:relative;margin:0;padding:0 28px;text-align:center;font-size:23px;font-weight:700;line-height:2.1;color:var(--tx);opacity:0;transform:translateY(10px);transition:opacity 1.4s ease 1.6s,transform 1.4s ease 1.6s}
+#intro.go .itx{opacity:1;transform:none}
+.iskip{position:absolute;bottom:calc(32px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);border:0;border-radius:999px;background:rgba(255,255,255,.14);color:rgba(255,255,255,.75);font:inherit;font-size:13px;font-weight:600;padding:8px 22px;transition:background 2s,color 2s}
+#intro.go .iskip{background:var(--fill);color:var(--mu)}
+/* «به نام خدا» ثابت بالای مقدمه */
+.bsm{position:absolute;top:calc(48px + env(safe-area-inset-top,0px));left:0;right:0;text-align:center;font-size:17px;font-weight:700;color:rgba(255,255,255,.55);opacity:0;animation:bIn 1.2s ease .3s forwards;transition:color 2.2s}
+#intro.go .bsm{color:var(--ac)}
+@keyframes bIn{to{opacity:1}}
+/* جمله‌ی پایانی بعد از ثبت تراز */
+.cls{background:rgba(0,0,0,.6);opacity:0;transition:opacity .5s}.cls.on{opacity:1}
+.cls p{margin:0;max-width:330px;color:#fff;font-size:20px;font-weight:700;line-height:2.1;text-align:center}
+
+/* صفحه‌کلید باز: نوار پایین پنهان */
+body.kb nav{display:none}
+/* روزشمار پاکی و کارت تبریک */
+.cong,.cln{display:block;width:100%;text-align:center;border:0;color:var(--on,#fff);font:inherit;cursor:pointer;padding:18px 16px;background:radial-gradient(120% 100% at 100% 0%,rgba(255,255,255,.22),transparent 55%),var(--ac)}
+.cln{cursor:default;padding:22px 16px}
+.cg-n{font-size:46px;font-weight:700;line-height:1.25}
+.cg-b{font-size:22px;font-weight:700;line-height:1.6;margin:2px 0}
+.cg-s{font-size:14px;opacity:.92}
+/* کارت پاکی جمع‌وجور در ترازنامه: عدد سمت راست، نوشته کنارش */
+.cong.cgk{padding:12px 16px}
+.cgr{display:flex;align-items:center;gap:14px;text-align:start}
+.cgn{display:flex;flex-direction:column;align-items:center;line-height:1.1;padding-inline-end:14px;border-inline-end:1px solid rgba(255,255,255,.35)}
+.cgn b{font-size:30px;font-weight:800}.cgn small{font-size:12px;opacity:.9}
+.cgt{flex:1;min-width:0}.cg-l1{font-size:15px;font-weight:700;line-height:1.6}.cg-l2{font-size:13px;opacity:.92;line-height:1.6}
+.cong[class*="sl-"]:not(.sl-wait)>.cgr>*{animation:slUp .8s cubic-bezier(.2,.7,.2,1) both}.cong[class*="sl-"]>.cgr>*:nth-child(2){animation-delay:.15s}
+.sl-wait{opacity:0}
+.sl-fade{animation:slFade .9s ease both}.sl-up{animation:slUp .9s cubic-bezier(.2,.7,.2,1) both}.sl-zoom{animation:slZoom .9s cubic-bezier(.2,.7,.2,1) both}
+.sl-side{animation:slSide .9s cubic-bezier(.2,.7,.2,1) both}.sl-flip{animation:slFlip 1s cubic-bezier(.2,.7,.2,1) both;transform-origin:50% 0}.sl-drop{animation:slDrop .9s cubic-bezier(.2,.7,.2,1) both}
+.cong[class*="sl-"]:not(.sl-wait)>.cgc>*{animation:slUp .8s cubic-bezier(.2,.7,.2,1) both}
+.cong[class*="sl-"]>.cgc>*:nth-child(2){animation-delay:.15s}.cong[class*="sl-"]>.cgc>*:nth-child(3){animation-delay:.3s}
+@keyframes slFade{from{opacity:0}to{opacity:1}}
+@keyframes slUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes slZoom{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes slSide{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
+@keyframes slFlip{from{opacity:0;transform:perspective(600px) rotateX(-75deg)}to{opacity:1;transform:none}}
+@keyframes slDrop{from{opacity:0;transform:translateY(-34px) scale(1.06)}to{opacity:1;transform:none}}
+/* بخش‌های داخل تنظیمات (خروجی و پشتیبان) */
+.accb .c{background:var(--bg);margin:8px 0}.accb h2{font-size:16px;margin:12px 2px 6px}
+
+/* دکمه‌ی ضبط با آیکون تک‌رنگ */
+.b.bi{display:flex;align-items:center;justify-content:center;gap:8px}.b.bi .ic{width:20px;height:20px}
+/* جشن آرام پشت کارت پاکی */
+.cong{position:relative;overflow:hidden}.cong>.cgc{position:relative;z-index:1}
+.cfx{position:absolute;inset:0;pointer-events:none;z-index:0}
+.cfx::before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent 0 10%,rgba(255,255,255,.16) 18%,transparent 30%,rgba(255,214,140,.16) 52%,transparent 64%,rgba(255,255,255,.12) 80%,transparent 92%);animation:cfxSpin 22s linear infinite}
+.cfx i{position:absolute;bottom:-14px;width:7px;height:7px;border-radius:2px;background:rgba(255,255,255,.7);opacity:0;animation:cfxRise 10s linear infinite}
+.cfx i:nth-child(3n){border-radius:50%;width:6px;height:6px;background:rgba(255,217,138,.85)}
+.cfx i:nth-child(4n){background:rgba(255,194,209,.8);width:5px;height:9px}
+.cfx i:nth-child(1){left:6%;animation-delay:0s;animation-duration:9s}
+.cfx i:nth-child(2){left:15%;animation-delay:3.2s;animation-duration:11s}
+.cfx i:nth-child(3){left:24%;animation-delay:6.1s;animation-duration:10s}
+.cfx i:nth-child(4){left:32%;animation-delay:1.4s;animation-duration:12s}
+.cfx i:nth-child(5){left:41%;animation-delay:7.6s;animation-duration:9.5s}
+.cfx i:nth-child(6){left:50%;animation-delay:2.3s;animation-duration:11.5s}
+.cfx i:nth-child(7){left:58%;animation-delay:5.2s;animation-duration:10.5s}
+.cfx i:nth-child(8){left:66%;animation-delay:.8s;animation-duration:12.5s}
+.cfx i:nth-child(9){left:74%;animation-delay:4.4s;animation-duration:9s}
+.cfx i:nth-child(10){left:82%;animation-delay:8.3s;animation-duration:11s}
+.cfx i:nth-child(11){left:89%;animation-delay:2.9s;animation-duration:10s}
+.cfx i:nth-child(12){left:95%;animation-delay:6.8s;animation-duration:12s}
+@keyframes cfxRise{0%{transform:translate(0,0) rotate(0);opacity:0}12%{opacity:.85}85%{opacity:.6}100%{transform:translate(16px,-210px) rotate(300deg);opacity:0}}
+@keyframes cfxSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.cfx{display:none}}.accb .c.cln{background:radial-gradient(120% 100% at 100% 0%,rgba(255,255,255,.22),transparent 55%),var(--ac);color:var(--on,#fff)}
+/* فصل‌های راهنما، هر کدام جدا باز و بسته می‌شوند */
+.hs{margin:0;border-top:1px solid var(--bd)}.hs:first-child{border-top:0}
+.hs>summary{padding:10px 2px;font-size:14.5px}
+.hb h4{margin:12px 0 2px;font-size:14px;color:var(--ac)}.hb h4:first-child{margin-top:2px}
+.hb{padding:0 2px 10px;font-size:14px}.hb p{margin:6px 0}.hb ol,.hb ul{margin:6px 0;padding-inline-start:22px}.hb li{margin:4px 0}
+.ban.wrn{background:transparent;border:1.5px solid var(--bad);color:var(--tx)}.ban.wrn b{color:var(--bad)}
+/* نمودار دایره‌ای گزارش */
+.hch{margin:20px 4px 8px}.hch h2{margin:0}
+.b.chb{display:flex;align-items:center;gap:6px;min-height:36px;padding:4px 12px;font-size:12.5px}.b.chb .ic{width:18px;height:18px}.b.chb.on{background:var(--tx);color:var(--bg)}
+.pie{margin:2px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.pie svg{display:block;width:min(100%,220px);height:auto;margin:4px auto 6px}
+.psl{stroke:var(--card);stroke-width:2;cursor:pointer;transition:opacity .15s}
+.pie svg:has(.psl.on) .psl:not(.on){opacity:.45}
+.pdet{min-height:22px;text-align:center;font-size:13px;font-weight:600}
+.plgs{margin:6px 0}.plg{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:3px 0}.plg i{width:12px;height:12px;border-radius:3px;flex:none}
+/* تبریک سالگرد پاکی */
+.ov.ann{z-index:60}
+.anc{position:relative;overflow:hidden;width:100%;max-width:340px;margin:0;padding:30px 20px 22px;text-align:center;color:var(--on,#fff);background:radial-gradient(120% 100% at 100% 0%,rgba(255,255,255,.22),transparent 55%),var(--ac);animation:slZoom .7s cubic-bezier(.2,.7,.2,1) both}
+.anc>.cgc{position:relative;z-index:1}
+.anc .cfx i{animation-name:cfxRiseT}
+.anc .cg-n{font-size:64px;line-height:1.2;margin-top:6px}
+.anc .cg-s:last-of-type{margin:10px 0 16px}
+.anc .b{background:var(--card);color:var(--tx);min-width:120px}
+@keyframes cfxRiseT{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:.9}88%{opacity:.6}100%{transform:translate(18px,-380px) rotate(420deg);opacity:0}}
+/* ترازنامه: کارت بالا با حلقه‌ی پیشرفت و تاریخ */
+.ihd .row{gap:10px}
+.ring{position:relative;width:58px;height:58px;flex:none}
+.ring svg{width:58px;height:58px;transform:rotate(-90deg);display:block}
+.ring circle{fill:none;stroke-width:6}.ring .rb{stroke:var(--fill)}.ring .rf{stroke:var(--ac);stroke-linecap:round}
+.ring.go .rf{transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1)}
+.ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;direction:ltr}
+.dtb{border:0;background:none;padding:0;font:inherit;font-weight:700;font-size:15px;color:var(--tx);cursor:pointer;text-align:start}
+.ihd .mu{line-height:1.6}
+/* بخش‌های سؤال با شمارنده */
+.sech{display:flex;align-items:center;gap:8px;margin:18px 4px 6px}
+.sech h3{flex:1;margin:0;font-size:14.5px;font-weight:700;color:var(--mu)}
+.cnt{font-size:12px;font-weight:700;padding:1px 10px;border-radius:999px;background:var(--fill);color:var(--mu);transition:background .3s,color .3s}
+.cnt.f{background:var(--ac2);color:var(--ac)}
+/* سؤال پاسخ‌داده: تیک کوچک و قاب ملایم */
+.qc{position:relative;transition:box-shadow .3s}
+.qc .q{padding-inline-end:26px}
+.qc.ans{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ac) 40%,transparent)}
+.qc .ok{position:absolute;top:13px;inset-inline-end:12px;width:22px;height:22px;border-radius:50%;background:var(--ac);color:var(--on,#fff);display:flex;align-items:center;justify-content:center;transform:scale(0)}
+.qc .ok .ic{width:14px;height:14px;stroke-width:3}
+.qc.ans .ok{transform:scale(1)}.qc.jst.ans .ok{animation:okIn .4s cubic-bezier(.3,1.6,.5,1)}
+@keyframes okIn{from{transform:scale(0)}to{transform:scale(1)}}
+.cps{gap:6px}.cps .b{min-height:34px;padding:4px 13px;font-size:13px}
+/* «+ افزودن توضیح»: کادر با حرکت نرم باز می‌شود */
+.adn{display:flex;align-items:center;gap:4px;border:0;background:none;padding:2px 0;color:var(--ac);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.adn span{display:inline-block;width:14px;text-align:center;font-weight:700}
+.nt{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}.nt.on{grid-template-rows:1fr}
+.nt>div{overflow:hidden;min-height:0}
+/* حلقه‌ی سبز فوکوس داخل کادر کشیده می‌شود تا با لبه‌ی پنهان‌کننده بریده یا بیرون‌زده دیده نشود */
+.nt textarea:focus{box-shadow:inset 0 0 0 2px var(--ac)}
+/* حالت یکی‌یکی: همه‌چیز در یک صفحه بدون پیمایش */
+.ihd.cmp{padding:10px 14px}.ihd.cmp .mu{display:none}.ihd.cmp .seg{margin:8px 0 0}
+.ihd.cmp .ring,.ihd.cmp .ring svg{width:46px;height:46px}.ihd.cmp .ring span{font-size:11.5px}
+.sth2{margin:8px 4px 4px}.sth2 h2{margin:0;font-size:17px}
+body.stpm{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}body.stpm.kb{padding-bottom:12px}
+body.stpm .bar{margin:2px 0 6px}
+/* گوشی‌های کوتاه‌تر: زیرعنوان بالای صفحه پنهان و همه‌چیز کمی فشرده‌تر */
+@media (max-height:720px){body.stpm .hsub{display:none}body.stpm .hdr{padding-bottom:6px}body.stpm .ihd .seg>button{min-height:32px;padding:4px}
+body.stpm .qc.stp{min-height:150px}body.stpm .qc.stp.lng .stk{display:none}body.stpm .qc.stp .cps .b{min-height:26px;font-size:12px;padding:0 9px}body.stpm .qc.stp.lng .q{font-size:14px;line-height:1.7}}
+.svb.inl{position:static;height:40px;padding:0 14px 0 12px;font-size:13.5px;box-shadow:0 4px 12px rgba(0,0,0,.15)}.svb.inl .ic{width:19px;height:19px}
+body.kb .svb.inl{max-width:40px;padding:0 10px}
+.qc.stp{min-height:200px;max-height:calc(100vh - 330px);overflow-y:auto;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:12px 14px;margin:6px 0 8px}
+.qc.stp .q{font-size:16.5px;font-weight:700;line-height:1.85;padding:0 16px}
+.qc.stp.lng .q{font-size:14.5px;line-height:1.75}
+.qc.stp .r{justify-content:center;margin-top:10px}.qc.stp .r:not(.cps) .b{min-width:100px;font-size:15.5px}
+.qc.stp .cps{gap:5px;margin:8px 0 4px}.qc.stp .cps .b{min-height:28px;padding:1px 10px;font-size:12.5px}
+.qc.stp .adn{margin-top:4px}
+.qc.stp .gq{text-align:start}
+.qc.stp .adn{align-self:center}.qc.stp textarea{text-align:start}
+.stk{margin-bottom:6px}
+.sF{animation:sF .35s cubic-bezier(.2,.7,.2,1)}@keyframes sF{from{opacity:0;transform:translateX(calc(-40px * var(--dr,1)))}to{opacity:1;transform:none}}
+.sB{animation:sB .35s cubic-bezier(.2,.7,.2,1)}@keyframes sB{from{opacity:0;transform:translateX(calc(40px * var(--dr,1)))}to{opacity:1;transform:none}}
+[dir=ltr]{--dr:-1}
+.bar i{transition:width .5s cubic-bezier(.2,.7,.2,1)}
+/* دکمه‌ی ثبت بالای نوار پایین می‌چسبد و وقتی همه جواب داده شد آرام می‌تپد */
+.svb{position:fixed;left:16px;bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:9;height:52px;max-width:150px;padding:0 18px 0 16px;border:0;border-radius:26px;display:flex;align-items:center;gap:8px;overflow:hidden;white-space:nowrap;background:var(--ac);color:var(--on,#fff);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.22);transition:max-width .4s cubic-bezier(.3,1.25,.5,1),padding .4s cubic-bezier(.3,1.25,.5,1),transform .15s,bottom .25s}
+.svb .ic{width:22px;height:22px;flex:none}
+.svb span{transition:opacity .25s}
+.svb:active{transform:scale(.94)}
+/* هنگام پیمایش یا تایپ: فقط دایره‌ی آیکون ذخیره */
+.svb.mini,body.kb .svb{max-width:52px;padding:0 15px}
+.svb.mini span,body.kb .svb span{opacity:0}
+body.kb .svb{bottom:12px}
+.svsp{height:56px}
+.svb.full{animation:breathe 1.8s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 8px 30px color-mix(in srgb,var(--ac) 60%,transparent),0 0 0 6px color-mix(in srgb,var(--ac) 18%,transparent)}}
+/* کاغذرنگی جمله‌ی پایانی */
+.cls{overflow:hidden}.cls p{position:relative;z-index:1}
+.cf{position:absolute;top:-14px;width:8px;height:12px;border-radius:2px;animation:fall 2.4s cubic-bezier(.3,.6,.5,1) forwards}
+@keyframes fall{to{transform:translate(var(--dx),105vh) rotate(var(--r));opacity:.85}}
+/* برنامه: جمله‌ی «فقط برای امروز» و کادر افزودن کار */
+.jft{text-align:center;padding:20px 18px;background:radial-gradient(120% 100% at 100% 0%,rgba(255,255,255,.55),transparent 55%),var(--ac2)}
+.jft .k{font-weight:700;color:var(--ac);font-size:13px}
+.jft .t{font-size:16.5px;font-weight:700;line-height:1.95;margin-top:4px}
+.addt{display:flex;gap:8px;align-items:center;background:transparent;border:1.5px dashed var(--ac);padding:8px 10px}
+.addt input{flex:1;min-width:0;background:none;padding:8px 4px}.addt input:focus{box-shadow:none}
+.addt .b{width:42px;height:42px;min-height:0;padding:0;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center}.addt .b .ic{width:21px;height:21px}
+/* برنامه: هر کار یک سطر با ✓ سبز، ✕ قرمز و سطل زباله */
+.seg small{font-weight:700;opacity:.7;font-size:12px}
+.tkl{padding:4px 0}
+.tk{padding:8px 10px 8px 6px;border-top:1px solid var(--bd)}.tk:first-child{border-top:0}
+.tk .row{gap:6px}.tt{flex:1;min-width:0;font-size:14.5px;line-height:1.6;padding-inline-start:6px}
+.tk.ok .tt{color:var(--mu);text-decoration:line-through}
+.rb{width:34px;height:34px;flex:none;padding:0;border-radius:50%;border:2px solid var(--fill);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .12s}
+.rb:active{transform:scale(.88)}.rb .ic{width:18px;height:18px;stroke-width:2.4}
+.rb.y{color:#1faa6b}.rb.n{color:var(--bad)}
+.rb.y.on{background:#1faa6b;border-color:#1faa6b;color:#fff}.rb.n.on{background:var(--bad);border-color:var(--bad);color:#fff}
+.rb.pp.on{animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.del{width:32px;height:32px;flex:none;padding:0;border:0;background:none;color:var(--mu);display:flex;align-items:center;justify-content:center;cursor:pointer}.del .ic{width:19px;height:19px}
+.tk textarea.why{margin:6px 0 2px;min-height:40px;font-size:13.5px;padding:8px 10px}
+.tk.pop{animation:cIn .5s cubic-bezier(.3,1.4,.5,1)}
+.c.pop{animation:cIn .5s cubic-bezier(.3,1.4,.5,1)}@keyframes cIn{from{opacity:0;transform:translateY(-10px) scale(.93)}to{opacity:1;transform:none}}
+.shk{animation:shk .35s}@keyframes shk{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.fromL,.fromR,.sF,.sB,.b.pp,.c.pop,.svb.full,.cf{animation:none!important}nav.go>.sk,.seg.go>.sk,.nt,.ring.go .rf,.svb{transition:none!important}}
+/* گزارش: کاشی‌های عدد، میله‌ی افقی، حلقه‌ها، ستون‌های هفتگی و رتبه‌بندی */
+.rfd{animation:fadeUp .35s ease}@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}}
+.c h3{font-size:15px;margin:0 0 4px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.tile{background:var(--card);border-radius:18px;padding:10px 6px;text-align:center}
+.tile b{display:block;font-size:21px;line-height:1.35}.tile span{display:block;font-size:11.5px;color:var(--mu);line-height:1.5}
+.rhb{margin:8px 0}.hl{display:flex;gap:6px;font-size:13.5px}.hl span{flex:1;min-width:0}.hl b{font-weight:700}
+.trk{height:10px;background:var(--fill);border-radius:999px;overflow:hidden;margin-top:3px}
+.trk i{display:block;height:100%;border-radius:999px;background:var(--ac);transform-origin:right;animation:grow .8s cubic-bezier(.2,.7,.2,1) both}
+[dir=ltr] .trk i{transform-origin:left}
+@keyframes grow{from{transform:scaleX(0)}}
+.rgx{display:block;margin:0 auto}.rgb{fill:none;stroke:var(--fill);stroke-width:9}.rgf{fill:none;stroke:var(--ac);stroke-width:9;stroke-linecap:round;animation:rgIn 1s cubic-bezier(.2,.7,.2,1) both}
+.rgx text{fill:var(--tx);font-family:inherit}
+@keyframes rgIn{from{stroke-dashoffset:1000}}
+.bigr{display:flex;align-items:center;gap:14px}.bigr .rgx{margin:0;flex:none}
+.rings{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.rgc{background:var(--card);border-radius:18px;padding:12px 8px;text-align:center}
+.rgc .t{font-size:13.5px;font-weight:700;line-height:1.5;margin-top:4px}.rgc .s{font-size:11.5px;color:var(--mu)}
+.cols{display:flex;align-items:flex-end;gap:3px;height:110px;margin:10px 0 2px;border-bottom:1px solid var(--bd)}
+.cols i{flex:1;background:var(--ac);border-radius:4px 4px 0 0;min-height:2px;transform-origin:bottom;animation:colUp .7s cubic-bezier(.2,.7,.2,1) both}
+@keyframes colUp{from{transform:scaleY(0)}}
+.xl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--mu)}
+.rk{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--bd)}.rk:first-of-type{border-top:0}
+.rk .no{width:24px;height:24px;border-radius:50%;background:var(--ac2);color:var(--ac);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+#rtip{position:fixed;z-index:70;max-width:80vw;background:var(--tx);color:var(--bg);font-size:12.5px;line-height:1.6;border-radius:10px;padding:5px 10px;pointer-events:none;animation:fadeUp .15s ease}
+@media (prefers-reduced-motion:reduce){.trk i,.rgf,.cols i,.rfd{animation:none!important}}
+/* اهداف هفتگی/ماهانه */
+.gper{font-size:11.5px;font-weight:700;color:var(--ac);background:var(--ac2);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.gdots{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.gdots i{width:26px;height:26px;border-radius:50%;background:var(--fill);font-style:normal;font-size:11px;font-weight:700;color:var(--mu);display:flex;align-items:center;justify-content:center}
+.gdots i.on{background:var(--ac);color:var(--on,#fff)}.gdots i.td{box-shadow:0 0 0 2px var(--ac)}.gdots i.ft{opacity:.45}
+.gdots.m{gap:3px}.gdots.m i{width:9px;height:9px;border-radius:3px}.gdots.m i.td{box-shadow:0 0 0 1.5px var(--ac)}
+.gtd{display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;padding:8px 10px;border:0;border-radius:14px;background:var(--bg);color:var(--tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:start}
+.gtd .gck{width:30px;height:30px}.gtd.on .gck{background:var(--ac);border-color:var(--ac)}.gtd.pp .gck{animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.gpk{display:flex;gap:8px;margin-top:10px}
+.gpk button{flex:1;border:2px solid var(--fill);background:var(--bg);border-radius:16px;padding:10px 8px;font:inherit;color:var(--tx);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:border-color .2s,background .2s}
+.gpk button b{font-size:15px}.gpk button span{font-size:11.5px;color:var(--mu);line-height:1.5;text-align:center}
+.gpk button.on{border-color:var(--ac);background:var(--ac2)}
+/* اهداف و قدم‌ها */
+.b.gmr{width:34px;height:34px;box-shadow:none;background:var(--fill)}
+.goal .bar{margin-bottom:2px}
+.gnxl{margin-top:12px;font-size:12.5px;font-weight:700;color:var(--ac)}
+.gstep{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14.5px}
+.gstep.nx{background:var(--ac2);border-radius:14px;padding:9px 10px;margin:4px 0;font-weight:600}
+.gstep.dn>span{color:var(--mu);text-decoration:line-through}
+.gstep input{flex:1;min-width:0;padding:7px 10px}
+.gck{width:26px;height:26px;flex:none;padding:0;border-radius:50%;border:2px solid var(--mu);background:none;color:var(--on,#fff);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.gstep.dn .gck{background:var(--ac);border-color:var(--ac)}.gck .ic{width:16px;height:16px;stroke-width:2.6}
+.gmn{margin-top:12px;padding-top:10px;border-top:1px solid var(--bd)}
+.gdone{margin:14px 0}.gdone>summary{padding:8px 4px;font-size:14.5px;color:var(--mu)}
+.gq{margin:6px 0 2px}.gq .gstep{padding:6px 0;line-height:1.5}.gq .gstep.dn>div>div:first-child{color:var(--mu);text-decoration:line-through}.b.gal{min-height:30px;padding:2px 12px;font-size:12px}
+#tst{position:fixed;top:calc(74px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-8px);background:var(--tx);color:var(--bg);padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}#tst.on{opacity:1;transform:translate(-50%,0)}
+.mrow{display:flex;gap:6px;overflow-x:auto;margin:2px -14px 10px;padding:2px 14px 4px;scrollbar-width:none}.mrow::-webkit-scrollbar{display:none}.mrow .b{flex:none;white-space:nowrap;font-size:13px;padding:6px 14px;min-height:0;display:inline-flex;align-items:center;gap:5px}.mrow .b svg{width:15px;height:15px}.mrow .b.on{background:var(--ac);color:var(--on);border-color:var(--ac)}
+.wpv{border-radius:16px;padding:18px 10px;display:flex;justify-content:center;margin:6px 0 12px;direction:ltr}.wdg{position:relative;display:flex;align-items:center;gap:12px;padding:8px 18px 8px 10px;border-radius:20px;font-family:Roboto,'Segoe UI',sans-serif}.wck{width:44px;height:44px;flex:none}.wc{display:flex;flex-direction:column;align-items:center;line-height:1}.wc b{font-size:16px;font-weight:600;letter-spacing:.4px}.wc span{font-size:13px;margin-top:5px}.wlg{position:absolute;top:5px;right:7px;width:11px;height:11px}
